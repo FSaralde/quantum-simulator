@@ -1,0 +1,29 @@
+{
+  "users": {
+    "test1782918554827@example.com": {
+      "email": "test1782918554827@example.com",
+      "name": "Test Learner",
+      "password": "423c20419f3b078decdf266b0926e1fa:ba77e5ab408e1ff0166b31289de1a98ab43520ccd68f1c646ba6f795b0274bb1",
+      "plan": "pro",
+      "settings": {
+        "theme": "dark",
+        "particles": true,
+        "wave": true
+      },
+      "created": 1782918555.011765
+    },
+    "franksaralde@gmail.com": {
+      "email": "franksaralde@gmail.com",
+      "name": "Learner",
+      "password": "54fa1ecef004a485d327d81627e40889:4f2906322924ad478c167210110d45fbd4195ea5a84dc8e7096c4b193dafdca2",
+      "plan": "free",
+      "settings": {
+        "theme": "dark",
+        "particles": true,
+        "wave": true
+      },
+      "created": 1783452633.718056
+    }
+  },
+  "sessions": {}
+}
