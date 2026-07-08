@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Science Lab</title>
+    <link rel="stylesheet" href="styles.css?v=deploy-ai-1" />
+  </head>
+  <body>
+    <nav class="app-nav">
+      <button class="brand-link" data-page="home">Quantum Lab</button>
+      <div class="nav-links">
+        <button data-page="home">Home</button>
+        <button data-page="lab">Simulator</button>
+        <button data-page="subscriptions">Subscriptions</button>
+        <button data-page="settings">Settings</button>
+      </div>
+      <div class="account-strip">
+        <span class="url-pill">Mac: 127.0.0.1 | Phone: use Mac Wi-Fi IP</span>
+        <span id="accountName">Guest</span>
+        <button id="loginNav" data-page="login">Login</button>
+        <button id="logoutNav" class="hidden">Logout</button>
+      </div>
+    </nav>
+
+    <section id="homePage" class="page home-page">
+      <div class="home-copy">
+        <p class="eyebrow">AI Science Workspace</p>
+        <h1>Learn science with live simulations and an AI tutor.</h1>
+        <p>Explore quantum experiments, graph functions, solve homework problems, generate visuals, and ask questions across science and math topics.</p>
+        <div class="home-actions">
+          <button class="primary-action" data-page="lab">Launch Simulator</button>
+          <button class="secondary-action" data-page="subscriptions">View Plans</button>
+        </div>
+        <div class="feature-strip">
+          <span>Simulations</span>
+          <span>AI tutor</span>
+          <span>Function graphs</span>
+          <span>Homework help</span>
+        </div>
+      </div>
+      <div class="home-visual" aria-hidden="true">
+        <div class="visual-title">Live Quantum Field</div>
+        <div class="orbit one"></div>
+        <div class="orbit two"></div>
+        <div class="dot a"></div>
+        <div class="dot b"></div>
+        <div class="dot c"></div>
+      </div>
+    </section>
+
+    <main class="app-shell">
+      <section class="stage">
+        <header class="topbar">
+          <div>
+            <h1>Quantum Lab</h1>
+            <p id="modeSummary">Interactive wave and particle experiments</p>
+          </div>
+          <div class="status" id="backendStatus">Checking backend...</div>
+        </header>
+
+        <nav class="tabs" aria-label="Experiment modes">
+          <button class="tab active" data-mode="double-slit">Double Slit</button>
+          <button class="tab" data-mode="light">Wave + Particle Light</button>
+          <button class="tab" data-mode="two-places">Two Places</button>
+          <button class="tab" data-mode="packet">Wave Packet</button>
+          <button class="tab" data-mode="dna">DNA Lab</button>
+        </nav>
+
+        <div class="canvas-wrap">
+          <canvas id="labCanvas" width="960" height="620"></canvas>
+        </div>
+      </section>
+
+      <aside class="control-panel">
+        <section class="readout">
+          <h2 id="modeTitle">Double Slit</h2>
+          <p id="modeText"></p>
+        </section>
+
+        <section class="ai-explainer">
+          <h2>AI Explainer</h2>
+          <p id="aiText">Ask for an explanation or practice problem based on the current settings.</p>
+          <div class="ai-actions">
+            <button id="explain" class="command">Explain This</button>
+            <button id="exampleProblem" class="command secondary">Example Problem</button>
+            <button id="generateVisual" class="command secondary" type="button">Generate Visual</button>
+          </div>
+        </section>
+
+        <section class="chatbot">
+          <div class="chatbot-head">
+            <h2>Quantum Chatbot</h2>
+            <span id="chatSource">Ready</span>
+          </div>
+          <div id="chatMessages" class="chat-messages" aria-live="polite"></div>
+          <div id="photoPreview" class="photo-preview hidden"></div>
+          <form id="chatForm" class="chat-form">
+            <textarea id="chatInput" rows="1" autocomplete="off" maxlength="1200" placeholder="Ask physics, calculus, or coding..."></textarea>
+            <input id="photoInput" class="hidden" type="file" accept="image/png,image/jpeg,image/webp" />
+            <button id="attachPhoto" class="command secondary" type="button">Attach Photo</button>
+            <button id="chatSend" class="command" type="submit">Send</button>
+          </form>
+          <button id="removePhoto" class="photo-remove hidden" type="button">Remove photo</button>
+        </section>
+
+        <section class="controls">
+          <div class="button-row">
+            <button id="playPause" class="command">Pause</button>
+            <button id="reset" class="command">Reset</button>
+            <button id="fire" class="command">Fire 20</button>
+          </div>
+
+          <label class="toggle quantum-only">
+            <input id="showParticles" type="checkbox" checked />
+            <span>Show particle detections</span>
+          </label>
+
+          <label class="toggle quantum-only">
+            <input id="showWave" type="checkbox" checked />
+            <span>Show wave field</span>
+          </label>
+
+          <label class="toggle double-only">
+            <input id="whichPath" type="checkbox" />
+            <span>Which-path detector</span>
+          </label>
+
+          <div class="slider-row double-only">
+            <label for="slitSeparation">Slit separation</label>
+            <output id="slitSeparationValue">1.80</output>
+            <input id="slitSeparation" type="range" min="0.4" max="4" step="0.02" value="1.8" />
+          </div>
+
+          <div class="slider-row double-only">
+            <label for="wavelength">Wavelength</label>
+            <output id="wavelengthValue">0.58</output>
+            <input id="wavelength" type="range" min="0.18" max="1.4" step="0.01" value="0.58" />
+          </div>
+
+          <div class="slider-row double-only">
+            <label for="slitWidth">Slit width</label>
+            <output id="slitWidthValue">0.42</output>
+            <input id="slitWidth" type="range" min="0.08" max="1.2" step="0.01" value="0.42" />
+          </div>
+
+          <div class="slider-row quantum-only">
+            <label for="particleRate">Particle rate</label>
+            <output id="particleRateValue">6</output>
+            <input id="particleRate" type="range" min="0" max="30" step="1" value="6" />
+          </div>
+
+          <div class="slider-row packet-only">
+            <label for="barrierHeight">Barrier height</label>
+            <output id="barrierHeightValue">0.55</output>
+            <input id="barrierHeight" type="range" min="0" max="1" step="0.01" value="0.55" />
+          </div>
+
+          <div class="dna-tools dna-only hidden">
+            <label for="dnaInput">DNA coding strand</label>
+            <textarea id="dnaInput" rows="3" spellcheck="false">ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG</textarea>
+            <div class="button-row">
+              <button id="transcribeDna" class="command" type="button">Transcribe</button>
+              <button id="translateDna" class="command" type="button">Translate</button>
+              <button id="mutateDna" class="command secondary" type="button">Mutate</button>
+            </div>
+            <div class="mutation-grid">
+              <button id="substituteDna" class="command secondary" type="button" data-mutation="substitution">Substitute</button>
+              <button id="insertDna" class="command secondary" type="button" data-mutation="insertion">Insert</button>
+              <button id="deleteDna" class="command secondary" type="button" data-mutation="deletion">Delete</button>
+              <button id="restoreDna" class="command secondary" type="button">Restore</button>
+            </div>
+            <button id="analyzeDna" class="command" type="button">Analyze DNA With AI</button>
+            <div class="dna-output">
+              <span>Status</span>
+              <strong id="dnaStatus">Ready to transcribe DNA into mRNA.</strong>
+              <span>mRNA</span>
+              <strong id="mrnaOutput">AUG...</strong>
+              <span>Protein</span>
+              <strong id="proteinOutput">Met...</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="metrics">
+          <div><span id="countLabel">Detections</span><strong id="hitCount">0</strong></div>
+          <div><span>Mode</span><strong id="modeMetric">Interference</strong></div>
+          <div><span>Backend</span><strong id="apiMetric">...</strong></div>
+        </section>
+      </aside>
+    </main>
+
+    <section id="loginPage" class="page form-page hidden">
+      <form id="authForm" class="auth-card">
+        <h1>Login or Create Account</h1>
+        <p>Accounts are stored locally by this demo backend.</p>
+        <label>Name <input id="authName" type="text" autocomplete="name" placeholder="Optional for signup" /></label>
+        <label>Email <input id="authEmail" type="email" autocomplete="email" required /></label>
+        <label>Password <input id="authPassword" type="password" autocomplete="current-password" required minlength="8" /></label>
+        <div class="button-row">
+          <button id="loginSubmit" class="command" type="button">Login</button>
+          <button id="signupSubmit" class="command" type="button">Sign Up</button>
+        </div>
+        <p id="authMessage" class="form-message"></p>
+      </form>
+    </section>
+
+    <section id="settingsPage" class="page form-page hidden">
+      <form id="settingsForm" class="auth-card">
+        <h1>Settings</h1>
+        <p id="settingsHint">Login to save settings.</p>
+        <label class="toggle"><input id="settingParticles" type="checkbox" checked /> Default particle detections</label>
+        <label class="toggle"><input id="settingWave" type="checkbox" checked /> Default wave field</label>
+        <label>Theme
+          <select id="settingTheme">
+            <option value="dark">Dark</option>
+            <option value="bright">Bright</option>
+          </select>
+        </label>
+        <label>Backend URL
+          <input id="settingApiBase" type="url" placeholder="Leave blank if backend is same site" />
+        </label>
+        <button class="command" type="submit">Save Settings</button>
+        <p id="settingsMessage" class="form-message"></p>
+      </form>
+    </section>
+
+    <section id="subscriptionsPage" class="page pricing-page hidden">
+      <header>
+        <p class="eyebrow">Demo Subscriptions</p>
+        <h1>Pick a learning plan</h1>
+        <p>No payment is processed. This updates your local demo account plan.</p>
+      </header>
+      <div class="pricing-grid">
+        <article class="price-card">
+          <h2>Free</h2>
+          <p>Simulator, local explanations, and basic chat.</p>
+          <strong>$0</strong>
+          <button class="command plan-button" data-plan="free">Use Free</button>
+        </article>
+        <article class="price-card featured">
+          <h2>Pro</h2>
+          <p>AI tutor, saved settings, and faster experiment flow.</p>
+          <strong>$8/mo</strong>
+          <button class="command plan-button" data-plan="pro">Choose Pro</button>
+        </article>
+        <article class="price-card">
+          <h2>Lab</h2>
+          <p>Classroom-style access and advanced demo controls.</p>
+          <strong>$19/mo</strong>
+          <button class="command plan-button" data-plan="lab">Choose Lab</button>
+        </article>
+      </div>
+      <p id="planMessage" class="form-message"></p>
+    </section>
+
+    <div id="explainModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <section class="modal-card">
+        <button id="closeModal" class="modal-close" aria-label="Close explanation">Close</button>
+        <p class="modal-kicker">AI Explainer</p>
+        <h2 id="modalTitle">Reading the Experiment</h2>
+        <p id="modalSource" class="modal-source">Preparing explanation...</p>
+        <p id="modalText" class="modal-text">Thinking about the current setup...</p>
+      </section>
+    </div>
+
+    <script src="app.js?v=deploy-ai-1"></script>
+  </body>
+</html>
